@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styles from "../../styles/styles";
-import { AiOutlineArrowRight, AiOutlineMoneyCollect } from "react-icons/ai";
+import { AiOutlineMoneyCollect } from "react-icons/ai";
 import { MdBorderClear } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { DataGrid } from "@material-ui/data-grid";
-import { Button } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllOrdersOfAdmin } from "../../redux/actions/order";
 import Loader from "../Layout/Loader";
@@ -19,9 +18,11 @@ const AdminDashboardMain = () => {
   useEffect(() => {
     dispatch(getAllOrdersOfAdmin());
     dispatch(getAllSellers());
-  }, []);
+  }, [dispatch]);
+  
 
-   const adminEarning = adminOrders && adminOrders.reduce((acc,item) => acc + item.totalPrice * .10, 0);
+  const adminEarning = adminOrders?.reduce((acc, item) => acc + item.totalPrice * 0.1, 0);
+
 
 
    const adminBalance = adminEarning?.toFixed(2);
@@ -64,17 +65,13 @@ const AdminDashboardMain = () => {
     },
   ];
 
-  const row = [];
-  adminOrders &&
-  adminOrders.forEach((item) => {
-      row.push({
-        id: item._id,
-        itemsQty: item?.cart?.reduce((acc, item) => acc + item.qty, 0),
-        total: item?.totalPrice + " $",
-        status: item?.status,
-        createdAt: item?.createdAt.slice(0,10),
-      });
-    });
+  const row = adminOrders?.map((item) => ({
+    id: item._id,
+    itemsQty: item?.cart?.reduce((acc, item) => acc + item.qty, 0),
+    total: item?.totalPrice + " $",
+    status: item?.status,
+    createdAt: item?.createdAt?.slice(0, 10),
+  }));
 
   return (
    <>
@@ -95,7 +92,7 @@ const AdminDashboardMain = () => {
               <h3
                 className={`${styles.productTitle} !text-[18px] leading-5 !font-[400] text-[#00000085]`}
               >
-                Total Earning
+                Total Earnings
               </h3>
             </div>
             <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">$ {adminBalance}</h5>

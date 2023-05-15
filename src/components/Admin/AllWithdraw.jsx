@@ -34,7 +34,15 @@ const AllWithdraw = () => {
       headerName: "Shop Name",
       minWidth: 180,
       flex: 1.4,
+      renderCell: (params) => {
+        const shopId = params.row.shopId;
+        return (
+          <Link to={`/shop/${shopId}`} className="link">
+            {params.value}
+          </Link>
+        );
     },
+  },
     {
       field: "shopId",
       headerName: "Shop Id",

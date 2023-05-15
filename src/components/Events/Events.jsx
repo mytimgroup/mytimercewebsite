@@ -1,10 +1,17 @@
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux';
-import styles from '../../styles/styles'
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import styles from '../../styles/styles';
 import EventCard from "./EventCard";
+import { fetchEvents } from '../../redux/actions/events';
 
 const Events = () => {
-  const {allEvents,isLoading} = useSelector((state) => state.events);  
+  const { allEvents, isLoading } = useSelector((state) => state.events);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Fetch events when the component mounts
+    dispatch(fetchEvents());
+  }, [dispatch]);
    
   return (
     <div>
@@ -37,4 +44,4 @@ const Events = () => {
   )
 }
 
-export default Events
+export default Events;
